@@ -1,48 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Notifications</title>
-  <style>
-    body { font-family: Arial; background: #f4f4f4; padding: 20px; }
-    .notification {
-      background: white; padding: 15px; margin-bottom: 10px;
-      border-left: 5px solid #007bff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .title { font-weight: bold; color: #007bff; }
-    .time { font-size: 12px; color: gray; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Notifications</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: white;
+    padding: 20px;
+  }
+
+  .notification {
+    background: #1e1e1e;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+  }
+
+  .notification:hover {
+    transform: translateY(-2px);
+  }
+
+  .notification .icon {
+    font-size: 24px;
+  }
+
+  .badge {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 12px;
+    padding: 3px 7px;
+    border-radius: 12px;
+    font-weight: bold;
+    color: white;
+  }
+
+  .update { background: #007bff; }
+  .alert { background: #dc3545; }
+  .offer { background: #28a745; }
+
+</style>
 </head>
 <body>
-  <h2>📢 Live Notifications</h2>
-  <div id="notifications">Loading...</div>
 
-  <script>
-    async function loadNotifications() {
-      try {
-        let url = "https://raw.githubusercontent.com/Mohitsaxena63/mohit-notifications/main/notifications.json";
-        let res = await fetch(url);
-        let data = await res.json();
+<h2>📢 Premium Notifications</h2>
 
-        let container = document.getElementById("notifications");
-        container.innerHTML = "";
-        data.forEach(n => {
-          container.innerHTML += `
-            <div class="notification">
-              <div class="title">${n.title}</div>
-              <div>${n.message}</div>
-              <div class="time">${n.time}</div>
-            </div>
-          `;
-        });
-      } catch (e) {
-        document.getElementById("notifications").innerHTML = "⚠️ Error loading notifications.";
-      }
-    }
+<div class="notification">
+  <div class="icon"><i class="fas fa-bell"></i></div>
+  <div>Website ka naya update release ho gaya hai! 🔥</div>
+  <div class="badge update">Update</div>
+</div>
 
-    loadNotifications();
-    setInterval(loadNotifications, 60000); // Har 1 min me refresh
-  </script>
+<div class="notification">
+  <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
+  <div>Security Alert! Apna password turant change karein.</div>
+  <div class="badge alert">Alert</div>
+</div>
+
+<div class="notification">
+  <div class="icon"><i class="fas fa-gift"></i></div>
+  <div>Special Offer – Aaj ke liye 50% discount! 🎁</div>
+  <div class="badge offer">Offer</div>
+</div>
+
 </body>
 </html>
