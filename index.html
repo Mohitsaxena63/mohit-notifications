@@ -21,8 +21,11 @@
   <script>
     async function loadNotifications() {
       try {
-        let url = "https://raw.githubusercontent.com/Mohitsaxena63/mohit-notifications/refs/heads/main/notifications.json";
+        // ✅ Correct RAW URL (without refs/heads/)
+        let url = "https://raw.githubusercontent.com/Mohitsaxena63/mohit-notifications/main/notifications.json";
         let res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+        
         let data = await res.json();
 
         let container = document.getElementById("notifications");
@@ -38,12 +41,12 @@
         });
       } catch (e) {
         document.getElementById("notifications").innerHTML = "⚠️ Error loading notifications.";
+        console.error("Fetch Error:", e);
       }
     }
 
     loadNotifications();
-    setInterval(loadNotifications, 60000); // Har 1 min me refresh
+    setInterval(loadNotifications, 60000); // 1 minute me refresh
   </script>
 </body>
 </html>
-
