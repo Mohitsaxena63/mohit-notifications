@@ -18,35 +18,46 @@
   <h2>📢 Live Notifications</h2>
   <div id="notifications">Loading...</div>
 
-  <script>
-    async function loadNotifications() {
-      try {
-        // ✅ Correct RAW URL (without refs/heads/)
-        let url = "https://raw.githubusercontent.com/Mohitsaxena63/mohit-notifications/main/notifications.json";
-        let res = await fetch(url);
-        if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
-        
-        let data = await res.json();
+ <script>
+const NOTIF_URL = "https://mohitsaxena6363.github.io/notifications.json";
+let lastData = "";
 
-        let container = document.getElementById("notifications");
-        container.innerHTML = "";
-        data.forEach(n => {
-          container.innerHTML += `
-            <div class="notification">
-              <div class="title">${n.title}</div>
-              <div>${n.message}</div>
-              <div class="time">${n.time}</div>
-            </div>
-          `;
-        });
-      } catch (e) {
-        document.getElementById("notifications").innerHTML = "⚠️ Error loading notifications.";
-        console.error("Fetch Error:", e);
-      }
+async function fetchNotifications() {
+    try {
+        const res = await fetch(NOTIF_URL + "?t=" + Date.now(), { cache: "no-store" });
+        const data = await res.json();
+        const jsonString = JSON.stringify(data);
+
+        if (jsonString !== lastData) {
+            lastData = jsonString;
+            renderNotifications(data);
+        }
+    } catch (err) {
+        console.error("Notification fetch error:", err);
     }
+}
 
-    loadNotifications();
-    setInterval(loadNotifications, 60000); // 1 minute me refresh
-  </script>
+function renderNotifications(list) {
+    const container = document.getElementById("notifList");
+    container.innerHTML = "";
+
+    list.forEach(n => {
+        const div = document.createElement("div");
+        div.className = "notif";
+        div.innerHTML = `
+            <strong style="color:blue">${n.title}</strong><br>
+            ${n.message}<br>
+            <small>${n.time}</small>
+        `;
+        container.appendChild(div);
+    });
+}
+
+// First load
+fetchNotifications();
+
+// Auto refresh every 60 sec
+setInterval(fetchNotifications, 60000);
+</script>
 </body>
 </html>
